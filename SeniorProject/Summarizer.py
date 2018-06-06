@@ -7,6 +7,9 @@ from summa import summarizer
 from _codecs import decode
 from _ast import Div
 from Summary import Summary
+import re
+import requests
+from PyDictionary import PyDictionary
 
 class ScienceSummarizer:
     
@@ -41,9 +44,7 @@ class ScienceSummarizer:
             self.log_error('Error during requests to {0} : {1}'.format(url, str(e)))
             return None
     
-    def get_html(self, filename):
-        html_file= open(filename, 'rt')
-        raw_html = html_file.read()
+    def get_html(self, raw_html):
         html = BeautifulSoup(raw_html, 'html.parser')
         
         return html
@@ -92,20 +93,39 @@ class ScienceSummarizer:
     
     def get_summary(self, url):
         raw_html = self.simple_get(url)
-        print(len(raw_html))
-        output_file = open("htmlOutput.txt", "w+", encoding='utf-8')
-        output_file.write(str(raw_html))
-        output_file.close()
         
+        print(len(raw_html))
+    
         #Get article and summarize it
-        html = self.get_html('htmlOutput.txt')
+        html = self.get_html(str(raw_html))
         article = self.get_article(html)
         title = self.get_title(html)
         
         summ = Summary(html, summarizer.summarize(self.unicodetoascii(article)), self.unicodetoascii(title).title())
         return summ
+    
+    #def get_science_terms(self, summ):
+     #   for word in summ.summary.split():
+           # if word is in scientific database:
+           #     summ.science_terms[word] = None
+           # else:
+           #     pass
+    
+    def get_definitions(self, summ):
+        dictionary = PyDictionary()
+        for term in summ.science_terms:
+            definitions = list(dictionary.meaning(term).values())
+    
+            
         
+        
+        
+
 scisumm = ScienceSummarizer()
 summ = scisumm.get_summary("https://www.nature.com/articles/d41586-018-05278-8")
 summ.print_summary()
-summ.find_science_words()
+
+
+            
+
+
