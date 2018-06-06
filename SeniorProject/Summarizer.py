@@ -46,7 +46,6 @@ class ScienceSummarizer:
     
     def get_html(self, raw_html):
         html = BeautifulSoup(raw_html, 'html.parser')
-        
         return html
     
     def get_article(self, html):
