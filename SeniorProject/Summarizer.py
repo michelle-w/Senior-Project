@@ -122,7 +122,21 @@ class ScienceSummarizer:
         for term in summ.science_terms:
             definition = list(dictionary.meaning(term).values())
             summ.science_terms[term] = definition
+    
+    def get_hyperlinks(self, url):
+        raw_html = self.simple_get(url)
         
+        print(len(raw_html))
+    
+        #Get article and summarize it
+        html = self.get_html(str(raw_html))
+        for link in html.find_all('a'):
+        current_link = link.get('href')
+        if current_link is not None:
+            if current_link.find("news/") is not -1:
+                news_hyperlinks.append(current_link)
+        for num in range(len(news_hyperlinks)):
+            print (news_hyperlinks[num])
 
 scisumm = ScienceSummarizer()
 summ = scisumm.get_summary("https://www.nature.com/articles/d41586-018-05357-w")
@@ -130,3 +144,4 @@ summ.print_summary()
 scisumm.get_science_terms(summ)
 scisumm.get_definitions(summ)
 summ.print_summary()
+scisumm.get_hyperlinks("https://www.nature.com")
