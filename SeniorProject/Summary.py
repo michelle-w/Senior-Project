@@ -14,6 +14,13 @@ class Summary:
     def print_summary(self):
         print("\n"+self.title)
         print("\n"+self.summary)
+        for term in self.science_terms:
+            print("\n")
+            print(term+":")
+            for i in range(0, len(self.science_terms[term])):
+                for j in range(0, len(self.science_terms[term][i])):
+                    print(self.science_terms[term][i][j])
+   
         
     
         

@@ -13,6 +13,10 @@ from PyDictionary import PyDictionary
 
 class ScienceSummarizer:
     
+    def __init__(self):
+        file = open("ScienceTerms.txt", "rt")
+        self.terms = list(file.readlines())
+ 
     def is_good_response(self, resp):
         """returns true if response is HTML"""
         content_type = resp.headers['Content-Type'].lower()
@@ -103,28 +107,26 @@ class ScienceSummarizer:
         summ = Summary(html, summarizer.summarize(self.unicodetoascii(article)), self.unicodetoascii(title).title())
         return summ
     
-    #def get_science_terms(self, summ):
-     #   for word in summ.summary.split():
-           # if word is in scientific database:
-           #     summ.science_terms[word] = None
-           # else:
-           #     pass
-    
+    def get_science_terms(self, summ):
+        for i in range(0, len(self.terms)):
+            self.terms[i] = self.terms[i].split("\n")[0]
+        
+        for word in summ.summary.split():
+            if word in self.terms:
+                summ.science_terms[word] = None
+            else:
+                pass
+                
     def get_definitions(self, summ):
         dictionary = PyDictionary()
         for term in summ.science_terms:
-            definitions = list(dictionary.meaning(term).values())
-    
-            
-        
-        
+            definition = list(dictionary.meaning(term).values())
+            summ.science_terms[term] = definition
         
 
 scisumm = ScienceSummarizer()
-summ = scisumm.get_summary("https://www.nature.com/articles/d41586-018-05278-8")
+summ = scisumm.get_summary("https://www.nature.com/articles/d41586-018-05357-w")
 summ.print_summary()
-
-
-            
-
-
+scisumm.get_science_terms(summ)
+scisumm.get_definitions(summ)
+summ.print_summary()
