@@ -1,0 +1,35 @@
+ScreenManagement:
+    IntroScreen:
+    SummariesScreen:
+	
+<IntroScreen>:
+    name: 'intro'
+    BoxLayout:
+    	orientation: "vertical"
+	    Label:
+	    	text: "Welcome to the Science Summarizer! Select a news source to get your daily overview of current advances in science and technology!"
+    		text_size: self.width, None
+    		halign: "center"
+    	
+	    
+	    Button:
+	        on_release: app.root.current = 'summaries'
+	        text: 'Nature Summaries'
+	        font_size: 50
+	        background_color: (255,0,0,0.75)
+	            
+<SummariesScreen>:
+    name: 'summaries'
+    BoxLayout:
+    	orientation: "vertical"
+		Label:
+			text: root.s
+			text_size: self.width, None
+			halign: "center"
+			
+	    Button:
+	        on_release: app.root.current = 'intro'
+	        text: 'Back to home screen'
+	        font_size: 50
+	        background_color: (255,0,100,0.75)
+ 
