@@ -16,6 +16,7 @@ class ScienceSummarizer:
     def __init__(self):
         file = open("ScienceTerms.txt", "rt")
         self.terms = list(file.readlines())
+        self.news_hyperlinks = []
  
     def is_good_response(self, resp):
         """returns true if response is HTML"""
@@ -94,19 +95,6 @@ class ScienceSummarizer:
                      )
         return TEXT
     
-    def get_summary(self, url):
-        raw_html = self.simple_get(url)
-        
-        print(len(raw_html))
-    
-        #Get article and summarize it
-        html = self.get_html(str(raw_html))
-        article = self.get_article(html)
-        title = self.get_title(html)
-        
-        summ = Summary(html, summarizer.summarize(self.unicodetoascii(article)), self.unicodetoascii(title).title())
-        return summ
-    
     def get_science_terms(self, summ):
         for i in range(0, len(self.terms)):
             self.terms[i] = self.terms[i].split("\n")[0]
@@ -123,6 +111,27 @@ class ScienceSummarizer:
             definition = list(dictionary.meaning(term).values())
             summ.science_terms[term] = definition
     
+    
+    def get_summary(self, url):
+        raw_html = self.simple_get(url)
+        
+        print(len(raw_html))
+    
+        #Get article and summarize it
+        html = self.get_html(str(raw_html))
+        article = self.get_article(html)
+        title = self.get_title(html)
+        if len(article.split("."))>40:
+            summ = summarizer.summarize(self.unicodetoascii(article), ratio=0.1)
+        else:
+            summ = summarizer.summarize(self.unicodetoascii(article), ratio=0.2)
+        summ = Summary(html, summ, self.unicodetoascii(title).title())
+        self.get_science_terms(summ)
+        self.get_definitions(summ)
+        
+        return summ
+    
+    
     def get_hyperlinks(self, url):
         raw_html = self.simple_get(url)
         
@@ -131,17 +140,23 @@ class ScienceSummarizer:
         #Get article and summarize it
         html = self.get_html(str(raw_html))
         for link in html.find_all('a'):
-        current_link = link.get('href')
-        if current_link is not None:
-            if current_link.find("news/") is not -1:
-                news_hyperlinks.append(current_link)
-        for num in range(len(news_hyperlinks)):
-            print (news_hyperlinks[num])
+            current_link = link.get('href')
+            if current_link is not None:
+                if current_link.find("articles/") is not -1:
+                    self.news_hyperlinks.append(current_link)
+        for num in range(0,len(self.news_hyperlinks)):
+            print (self.news_hyperlinks[num])
 
 scisumm = ScienceSummarizer()
-summ = scisumm.get_summary("https://www.nature.com/articles/d41586-018-05357-w")
-summ.print_summary()
-scisumm.get_science_terms(summ)
-scisumm.get_definitions(summ)
-summ.print_summary()
-scisumm.get_hyperlinks("https://www.nature.com")
+scisumm.get_hyperlinks("https://www.nature.com/news")
+for link in scisumm.news_hyperlinks:
+    summ = scisumm.get_summary(link)
+    summ.print_summary()
+    
+    
+#summ = scisumm.get_summary("https://www.nature.com/articles/d41586-018-05357-w")
+#summ.print_summary()
+#scisumm.get_science_terms(summ)
+#scisumm.get_definitions(summ)
+#summ.print_summary()
+#scisumm.get_hyperlinks("https://www.nature.com/news")

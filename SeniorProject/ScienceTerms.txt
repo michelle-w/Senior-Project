@@ -90,7 +90,6 @@ PneumaticTrough
 Pyrotechny
 Radioactivity
 RawMaterials
-Reagan
 Reduction
 Refrigerator
 Saturated
@@ -1826,3 +1825,4 @@ xrays
 xwell'slawofinduction
 zeroerror
 zenerdiode
+
