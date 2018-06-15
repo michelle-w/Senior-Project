@@ -9,6 +9,8 @@ from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.boxlayout import BoxLayout
 from ScienceSummarizer import ScienceSummarizer
+from kivy.uix.scrollview import ScrollView
+from kivy.core.window import Window
 
 
 class IntroScreen(Screen):
@@ -21,6 +23,8 @@ class SummariesScreen(Screen):
     link = scisumm.news_hyperlinks[0]
     summ = scisumm.get_summary(link)
     s = summ.summary
+    t = summ.title
+    d = ""
     pass
 
 class ScreenManagement(ScreenManager):

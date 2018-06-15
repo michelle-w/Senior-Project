@@ -22,10 +22,16 @@ ScreenManagement:
     name: 'summaries'
     BoxLayout:
     	orientation: "vertical"
-		Label:
-			text: root.s
-			text_size: self.width, None
-			halign: "center"
+    	ScrollView:
+			size: self.size
+			Label:
+				text: root.s
+				text_size: self.width, None
+				halign: "center"
+		Button:
+			text: "Get definitions"
+		Button:
+			text: "Next summary"
 			
 	    Button:
 	        on_release: app.root.current = 'intro'
