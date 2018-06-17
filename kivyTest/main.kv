@@ -1,6 +1,7 @@
 ScreenManagement:
     IntroScreen:
     SummariesScreen:
+    DefsScreen:
 	
 <IntroScreen>:
     name: 'intro'
@@ -22,20 +23,42 @@ ScreenManagement:
     name: 'summaries'
     BoxLayout:
     	orientation: "vertical"
-    	ScrollView:
-			size: self.size
-			Label:
-				text: root.s
-				text_size: self.width, None
-				halign: "center"
+    	Label:
+			text: root.t
+			size_hint: (1,0.1)
+			font_size: 20
+			halign: "center"
+			canvas.before:
+				Color:
+					rgba: (1, 0, 0, 0.5)
+				Rectangle:
+					pos: self.pos
+					size: self.size
+		Label:
+			text: root.s
+			text_size: self.width, None
+			font_size: 16
+			halign: "left"
+			canvas.before:
+				Color:
+					rgba: (1, 0, 0, 0.5)
+				Rectangle:
+					pos: self.pos
+					size: self.size
 		Button:
 			text: "Get definitions"
+			on_release: app.root.current = 'summariesWithDefs'
+			size_hint: (1,0.1)
+			font_size: 17
+			background_color: (0.3, 0.1, 1, 0.8)
 		Button:
 			text: "Next summary"
-			
+			size_hint: (1,0.1)	
+			font_size: 17
+			background_color: (0.3, 0.1, 1, 0.8)		
 	    Button:
 	        on_release: app.root.current = 'intro'
 	        text: 'Back to home screen'
-	        font_size: 50
-	        background_color: (255,0,100,0.75)
- 
+	        font_size: 17
+	        background_color: (0.5,0.5,1,0.8)
+	        size_hint: (1,0.1)

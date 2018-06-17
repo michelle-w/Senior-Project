@@ -11,6 +11,7 @@ from kivy.uix.boxlayout import BoxLayout
 from ScienceSummarizer import ScienceSummarizer
 from kivy.uix.scrollview import ScrollView
 from kivy.core.window import Window
+from kivy.uix.gridlayout import GridLayout
 
 
 class IntroScreen(Screen):
@@ -24,8 +25,12 @@ class SummariesScreen(Screen):
     summ = scisumm.get_summary(link)
     s = summ.summary
     t = summ.title
-    d = ""
+    d = str(summ.science_terms)
     pass
+
+class DefsScreen(Screen):
+    d = str({"Hi": 1})
+
 
 class ScreenManagement(ScreenManager):
     pass
