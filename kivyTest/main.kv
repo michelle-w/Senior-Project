@@ -1,7 +1,6 @@
 ScreenManagement:
     IntroScreen:
     SummariesScreen:
-    DefsScreen:
 	
 <IntroScreen>:
     name: 'intro'
@@ -24,7 +23,8 @@ ScreenManagement:
     BoxLayout:
     	orientation: "vertical"
     	Label:
-			text: root.t
+    		id: label1
+    		text: root.t
 			size_hint: (1,0.1)
 			font_size: 20
 			halign: "center"
@@ -35,6 +35,7 @@ ScreenManagement:
 					pos: self.pos
 					size: self.size
 		Label:
+			id: label2
 			text: root.s
 			text_size: self.width, None
 			font_size: 16
@@ -47,12 +48,12 @@ ScreenManagement:
 					size: self.size
 		Button:
 			text: "Get definitions"
-			on_release: app.root.current = 'summariesWithDefs'
 			size_hint: (1,0.1)
 			font_size: 17
 			background_color: (0.3, 0.1, 1, 0.8)
 		Button:
 			text: "Next summary"
+			on_release: root.change_summaries()
 			size_hint: (1,0.1)	
 			font_size: 17
 			background_color: (0.3, 0.1, 1, 0.8)		

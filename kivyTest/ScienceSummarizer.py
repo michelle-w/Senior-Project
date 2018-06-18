@@ -5,6 +5,9 @@ Created on Jun 13, 2018
 '''
 from requests import get
 from requests.exceptions import RequestException
+from requests import Session
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.util.retry import Retry
 from contextlib import closing
 from bs4 import BeautifulSoup
 from requests.exceptions import RequestException
@@ -15,6 +18,8 @@ from Summary import Summary
 import re
 import requests
 from PyDictionary import PyDictionary
+import time
+
 
 class ScienceSummarizer:
     
@@ -44,12 +49,29 @@ class ScienceSummarizer:
         If there were any problems with your request (like the url is bad or the remote server is down) 
         then your functon returns None.
         """
-        try:
+        
+        """try:
             with closing(get(url, stream=True)) as resp:
                 if self.is_good_response(resp):
                     return resp.content
                 else:
                     return None
+        except RequestException as e:
+            self.log_error('Error during requests to {0} : {1}'.format(url, str(e)))
+            return None"""
+            
+        try:
+            session = requests.Session()
+            retry = Retry(connect=3, backoff_factor=0.5)
+            adapter = HTTPAdapter(max_retries=retry)
+            session.mount('http://', adapter)
+            session.mount('https://', adapter)
+
+            resp = session.get(url)
+            if self.is_good_response(resp):
+                return resp.content
+            else:
+                return None
         except RequestException as e:
             self.log_error('Error during requests to {0} : {1}'.format(url, str(e)))
             return None
@@ -95,6 +117,7 @@ class ScienceSummarizer:
                 replace('\\xe2\\x81\\xbc', "=").
                 replace('\\xe2\\x81\\xbd', "(").
                 replace('\\xe2\\x81\\xbe', ")").
+                replace('\n', "").
                 replace("\\'", "'")
     
                      )

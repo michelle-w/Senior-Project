@@ -12,25 +12,35 @@ from ScienceSummarizer import ScienceSummarizer
 from kivy.uix.scrollview import ScrollView
 from kivy.core.window import Window
 from kivy.uix.gridlayout import GridLayout
+from kivy.properties import StringProperty
 
 
 class IntroScreen(Screen):
     pass
 
 class SummariesScreen(Screen):
-    summaries=[]
-    scisumm = ScienceSummarizer()
-    scisumm.get_hyperlinks("https://www.nature.com/news")
-    link = scisumm.news_hyperlinks[0]
-    summ = scisumm.get_summary(link)
-    s = summ.summary
-    t = summ.title
-    d = str(summ.science_terms)
-    pass
-
-class DefsScreen(Screen):
-    d = str({"Hi": 1})
-
+    def __init__(self, **kwargs):
+        super(Screen, self).__init__(**kwargs)
+        self.summary_index = 0
+        self.scisumm = ScienceSummarizer()
+        self.scisumm.get_hyperlinks("https://www.nature.com/news")
+        link = self.scisumm.news_hyperlinks[self.summary_index]
+        summ = self.scisumm.get_summary(link)
+        self.s = summ.summary
+        self.t = summ.title
+    
+    def change_summaries(self):
+        print("running change summary")
+        self.summary_index+= 1
+        print(self.summary_index)
+        link = self.scisumm.news_hyperlinks[self.summary_index]
+        summ = self.scisumm.get_summary(link)
+        label1= self.ids['label1']
+        label2 = self.ids['label2']
+        self.s = summ.summary
+        self.t = summ.title
+        label1.text = self.t
+        label2.text= self.s
 
 class ScreenManagement(ScreenManager):
     pass
@@ -39,6 +49,6 @@ class ScreenManagement(ScreenManager):
 class MainApp(App):
             
     def build(self):
-        return Builder.load_file("main.kv")
-
-MainApp().run()
+        pass
+if __name__=="__main__":
+    MainApp().run()
