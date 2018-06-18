@@ -117,7 +117,6 @@ class ScienceSummarizer:
                 replace('\\xe2\\x81\\xbc', "=").
                 replace('\\xe2\\x81\\xbd', "(").
                 replace('\\xe2\\x81\\xbe', ")").
-                replace('\n', "").
                 replace("\\'", "'")
     
                      )

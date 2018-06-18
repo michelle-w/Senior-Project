@@ -7,16 +7,25 @@ ScreenManagement:
     BoxLayout:
     	orientation: "vertical"
 	    Label:
-	    	text: "Welcome to the Science Summarizer! Select a news source to get your daily overview of current advances in science and technology!"
+	    	text: "Welcome to the SCIENCE SUMMARIZER! Select a news source to get your daily overview of current advances in science and technology!"
     		text_size: self.width, None
+    		font_size: 35
     		halign: "center"
+    		canvas.before:
+				Color:
+					rgba: (0.42, 0.48, 0.56, 1)
+				Rectangle:
+					pos: self.pos
+					size: self.size
     	
 	    
 	    Button:
+	    	id: summaryBtn
 	        on_release: app.root.current = 'summaries'
-	        text: 'Nature Summaries'
-	        font_size: 50
-	        background_color: (255,0,0,0.75)
+	        text: 'Nature News Summaries'
+	        size_hint: (1, 0.35)
+	        font_size: 30
+	        background_color: (1,0,0.3,0.9)
 	            
 <SummariesScreen>:
     name: 'summaries'
@@ -48,6 +57,7 @@ ScreenManagement:
 					size: self.size
 		Button:
 			text: "Get definitions"
+			on_release: root.show_defs()
 			size_hint: (1,0.1)
 			font_size: 17
 			background_color: (0.3, 0.1, 1, 0.8)
